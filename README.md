@@ -15,13 +15,24 @@ Phase-01 Completed
 Make sure to install the following ROS 2 Jazzy Jalisco packages:
 
 ```bash
-sudo apt install -y                         \
-    ros-jazzy-ros-gz                        \
-    ros-jazzy-ros-gz-bridge                 \
-    ros-jazzy-joint-state-publisher         \
-    ros-jazzy-xacro                         \
-    ros-jazzy-teleop-twist-keyboard         \
-    ros-jazzy-teleop-twist-joy 
+sudo apt install -y \
+    ros-jazzy-ros-gz \
+    ros-jazzy-ros-gz-bridge \
+    ros-jazzy-ros-gz-image \
+    ros-jazzy-ros-gz-sim \
+    ros-jazzy-xacro \
+    ros-jazzy-robot-state-publisher \
+    ros-jazzy-joint-state-publisher \
+    ros-jazzy-joint-state-publisher-gui \
+    ros-jazzy-teleop-twist-keyboard \
+    ros-jazzy-teleop-twist-joy \
+    libgz-sim8-dev \
+    libgz-msgs11-dev \
+    libgz-transport13-dev \
+    libgz-math8-dev \
+    libgz-common5-dev \
+    gz-harmonic
+
 ```
 ### Clone the Repository
 
