@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="four_wheel_rover">
+
+  <!-- ========================= -->
+  <!-- Robot Geometry Parameters -->
+  <!-- ========================= -->
+  <xacro:property name="L" value="0.31348"/>   <!-- length -->
+  <xacro:property name="W" value="0.290"/>     <!-- width -->
+  <xacro:property name="H" value="0.160"/>     <!-- height -->
+  <xacro:property name="wheel_r" value="0.05"/>  <!-- radius -->
+  <xacro:property name="wheel_w" value="0.08"/>  <!-- width -->
+
+  <!-- Slight outside offset so wheels stick out correctly -->
+  <xacro:property name="wheel_y_offset" value="${W/2 + 0.02}"/>  
+  <xacro:property name="wheel_x_front" value="${L/2 - 0.06}"/>
+  <xacro:property name="wheel_x_back"  value="-${L/2 - 0.06}"/>
+
+  <!-- ========================= -->
+  <!-- Physical Material + Mass  -->
+  <!-- ========================= -->
+  <xacro:property name="rho" value="2700"/>
+  <!-- pi was removed because xacro may predefine it in some environments -->
+
+  <!-- Body mass -->
+  <xacro:property name="m_body" value="39.27"/>
+
+  <!-- Wheel mass -->
+  <xacro:property name="m_wheel" value="1.69"/>
+
+  <!-- Body inertia -->
+  <xacro:property name="Ixx_body" value="0.359"/>
+  <xacro:property name="Iyy_body" value="0.406"/>
+  <xacro:property name="Izz_body" value="0.596"/>
+
+  <!-- Wheel inertia -->
+  <xacro:property name="I_wheel_axial" value="0.00196"/>
+  <xacro:property name="I_wheel_zz" value="0.00212"/>
+
+  <!-- ========================= -->
+  <!-- Base footprint -->
+  <!-- ========================= -->
+  <link name="base_footprint"/>
+
+  <!-- ========================= -->
+  <!-- BODY LINK -->
+  <!-- ========================= -->
+  <link name="base_link">
+
+    <visual>
+      <origin xyz="0 0 ${wheel_r + H/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${L} ${W} ${H}"/>
+      </geometry>
+      <material name="grey"><color rgba="0.6 0.6 0.6 1"/></material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${wheel_r + H/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${L} ${W} ${H}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 ${wheel_r + H/2}" rpy="0 0 0"/>
+      <mass value="${m_body}"/>
+      <inertia ixx="${Ixx_body}" ixy="0" ixz="0"
+               iyy="${Iyy_body}" iyz="0"
+               izz="${Izz_body}"/>
+    </inertial>
+  </link>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
+
+  <!-- ========================= -->
+  <!-- WHEEL MACRO -->
+  <!-- ========================= -->
+  <xacro:macro name="wheel" params="wheel_name x y">
+  <link name="${wheel_name}_link">
+
+    <visual>
+      <!-- rotate cylinder so its axis aligns with the joint axis (y) -->
+      <origin xyz="0 0 0" rpy="-1.57 0 0"/>
+      <geometry>
+        <cylinder radius="${wheel_r}" length="${wheel_w}"/>
+      </geometry>
+      <material name="black"><color rgba="0.1 0.1 0.1 1"/></material>
+    </visual>
+
+    <collision>
+      <!-- same rotation for collision geometry -->
+      <origin xyz="0 0 0" rpy="-1.57 0 0"/>
+      <geometry>
+        <cylinder radius="${wheel_r}" length="${wheel_w}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <!-- inertial principal axes rotated to match geometry orientation -->
+      <origin xyz="0 0 0" rpy="-1.57 0 0"/>
+      <mass value="${m_wheel}"/>
+      <inertia ixx="${I_wheel_axial}" ixy="0" ixz="0"
+               iyy="${I_wheel_axial}" iyz="0"
+               izz="${I_wheel_zz}"/>
+    </inertial>
+
+  </link>
+
+  <joint name="${wheel_name}_joint" type="continuous">
+    <origin xyz="${x} ${y} ${wheel_r}" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="${wheel_name}_link"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+  </xacro:macro>
+
+
+  <!-- ========================= -->
+  <!-- FOUR WHEELS -->
+  <!-- ========================= -->
+
+  <!-- Front Left -->
+  <xacro:wheel wheel_name="front_left"
+               x="${wheel_x_front}"
+               y="${wheel_y_offset}"/>
+
+  <!-- Front Right -->
+  <xacro:wheel wheel_name="front_right"
+               x="${wheel_x_front}"
+               y="-${wheel_y_offset}"/>
+
+  <!-- Rear Left -->
+  <xacro:wheel wheel_name="rear_left"
+               x="${wheel_x_back}"
+               y="${wheel_y_offset}"/>
+
+  <!-- Rear Right -->
+  <xacro:wheel wheel_name="rear_right"
+               x="${wheel_x_back}"
+               y="-${wheel_y_offset}"/>
+
+  <!-- ========================= -->
+  <!-- GAZEBO PLUGINS (Inline for Harmonic) -->
+  <!-- ========================= -->
+  <gazebo>
+    <plugin filename="libgz-sim8-diff-drive-system.so.8.9.0" name="gz::sim::systems::DiffDrive">
+
+      <!-- LEFT wheels -->
+      <left_joint>front_left_joint</left_joint>
+      <left_joint>rear_left_joint</left_joint>
+
+      <!-- RIGHT wheels -->
+      <right_joint>front_right_joint</right_joint>
+      <right_joint>rear_right_joint</right_joint>
+
+      <!-- geometry -->
+      <wheel_separation>${2 * wheel_y_offset}</wheel_separation>
+      <wheel_diameter>${2 * wheel_r}</wheel_diameter>
+
+      <!-- topics -->
+      <topic>cmd_vel</topic>
+      <odom_topic>odom</odom_topic>
+      <tf_topic>/tf</tf_topic>
+
+      <!-- frames -->
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_footprint</child_frame_id>
+
+      <odom_publisher_frequency>50</odom_publisher_frequency>
+    </plugin>
+
+    <plugin filename="libgz-sim8-joint-state-publisher-system.so.8.9.0"
+            name="gz::sim::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+    </plugin>
+
+  </gazebo>
+
+</robot>
