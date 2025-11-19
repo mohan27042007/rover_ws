@@ -1,0 +1,1 @@
+/home/mohanarangan-t-r/rover_ws/build/rover_gz_sim/ament_cmake_environment_hooks/local_setup.sh
