@@ -1,0 +1,6 @@
+# ROS 2 / Colcon build artifacts
+build/
+install/
+log/
+.ros/
+.vscode/ # Optional: ignore editor-specific settings
