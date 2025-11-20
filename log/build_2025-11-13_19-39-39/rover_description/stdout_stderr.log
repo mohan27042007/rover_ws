@@ -1,0 +1,40 @@
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found xacro: 2.1.1 (/opt/ros/jazzy/share/xacro/cmake)
+-- Found ament_lint_auto: 0.17.3 (/opt/ros/jazzy/share/ament_lint_auto/cmake)
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done (0.7s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/mohanarangan-t-r/rover_ws/build/rover_description
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/urdf/robot.xacro
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/ament_index/resource_index/package_run_dependencies/rover_description
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/ament_index/resource_index/parent_prefix_path/rover_description
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/environment/ament_prefix_path.sh
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/environment/ament_prefix_path.dsv
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/environment/path.sh
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/environment/path.dsv
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/local_setup.bash
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/local_setup.sh
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/local_setup.zsh
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/local_setup.dsv
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/package.dsv
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/ament_index/resource_index/packages/rover_description
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/cmake/rover_descriptionConfig.cmake
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/cmake/rover_descriptionConfig-version.cmake
+-- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_description/share/rover_description/package.xml

@@ -119,6 +119,83 @@
   </joint>
   </xacro:macro>
 
+  <!-- LiDAR link (visual/collision/inertial only) -->
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <cylinder radius="0.065" length="0.05"/>
+      </geometry>
+      <material name="black"><color rgba="0.1 0.1 0.1 1"/></material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <cylinder radius="0.065" length="0.05"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.3"/>
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <!-- LiDAR joint -->
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <!-- Mount at front-center of rover, facing forward horizontally -->
+    <origin xyz="0.20 0 0.32" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- Camera link + optical frame -->
+  <link name="camera_link">
+    <visual>
+      <!-- small housing placed on the front of the rover -->
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.08 0.05 0.04"/>
+      </geometry>
+      <material name="black"><color rgba="0.0 0.0 0.0 1"/></material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.08 0.05 0.04"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.2"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.0005" ixy="0.0" ixz="0.0" iyy="0.0005" iyz="0.0" izz="0.0005"/>
+    </inertial>
+  </link>
+
+  <!-- Camera optical frame (use this frame for image topic) -->
+  <link name="camera_optical_frame"/>
+
+  <!-- Camera mount joint -->
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <!-- placed on front-center at top; facing forward horizontally -->
+    <origin xyz="0.13 0 0.45" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Optical frame fixed to camera_link (allows correct TF for image viewer/rviz) -->
+  <joint name="camera_to_optical" type="fixed">
+    <parent link="camera_link"/>
+    <child link="camera_optical_frame"/>
+    <!-- keep identity transform; change rpy if you need optical axes rotated -->
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
 
   <!-- ========================= -->
   <!-- FOUR WHEELS -->
@@ -148,8 +225,8 @@
   <!-- GAZEBO PLUGINS (Inline for Harmonic) -->
   <!-- ========================= -->
   <gazebo>
-    <plugin filename="libgz-sim8-diff-drive-system.so.8.9.0" name="gz::sim::systems::DiffDrive">
 
+    <plugin filename="libgz-sim8-diff-drive-system.so" name="gz::sim::systems::DiffDrive">
       <!-- LEFT wheels -->
       <left_joint>front_left_joint</left_joint>
       <left_joint>rear_left_joint</left_joint>
@@ -174,11 +251,69 @@
       <odom_publisher_frequency>50</odom_publisher_frequency>
     </plugin>
 
-    <plugin filename="libgz-sim8-joint-state-publisher-system.so.8.9.0"
+
+    <plugin filename="libgz-sim8-joint-state-publisher-system.so"
             name="gz::sim::systems::JointStatePublisher">
       <topic>joint_states</topic>
     </plugin>
 
+
+    <!-- Global sensors system (required for all sensors) -->
+    <plugin filename="libgz-sim8-sensors-system.so"
+            name="gz::sim::systems::Sensors">
+    </plugin>
+  </gazebo>
+
+  <!-- LiDAR sensor attached to lidar_link (proper gazebo reference structure) -->
+  <gazebo reference="lidar_link">
+    <sensor name="lidar_sensor" type="gpu_lidar">
+      <frame_id>lidar_link</frame_id>
+      <pose>0 0 0 0 0 0</pose> 
+      <topic>scan</topic>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>1</samples>
+            <resolution>0.01</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>0</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.08</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+      <visualize>true</visualize>
+    </sensor>
+  </gazebo>
+
+  <!-- Camera sensor attached to camera_link -->
+  <gazebo reference="camera_link">
+    <sensor name="camera_sensor" type="camera">
+      <topic>camera/image_raw</topic>
+      <update_rate>30</update_rate>
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>50.0</far>
+        </clip>
+      </camera>
+    </sensor>
   </gazebo>
 
 </robot>

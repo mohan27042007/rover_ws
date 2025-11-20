@@ -1,0 +1,49 @@
+[0.010s] Invoking command in '/home/mohanarangan-t-r/rover_ws/build/rover_gz_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/mohanarangan-t-r/rover_ws/src/rover_gz_sim -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/mohanarangan-t-r/rover_ws/install/rover_gz_sim
+[0.079s] -- The C compiler identification is GNU 13.3.0
+[0.148s] -- The CXX compiler identification is GNU 13.3.0
+[0.165s] -- Detecting C compiler ABI info
+[0.243s] -- Detecting C compiler ABI info - done
+[0.250s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.251s] -- Detecting C compile features
+[0.251s] -- Detecting C compile features - done
+[0.258s] -- Detecting CXX compiler ABI info
+[0.342s] -- Detecting CXX compiler ABI info - done
+[0.348s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.348s] -- Detecting CXX compile features
+[0.348s] -- Detecting CXX compile features - done
+[0.357s] -- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[0.480s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[0.542s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.596s] -- Found ament_lint_auto: 0.17.3 (/opt/ros/jazzy/share/ament_lint_auto/cmake)
+[0.694s] -- Added test 'flake8' to check Python code syntax and style conventions
+[0.694s] -- Configured 'flake8' exclude dirs and/or files: 
+[0.694s] -- Added test 'lint_cmake' to check CMake code style
+[0.695s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[0.696s] -- Added test 'xmllint' to check XML markup files
+[0.697s] -- Configuring done (0.7s)
+[0.700s] -- Generating done (0.0s)
+[0.701s] -- Build files have been written to: /home/mohanarangan-t-r/rover_ws/build/rover_gz_sim
+[0.711s] Invoked command in '/home/mohanarangan-t-r/rover_ws/build/rover_gz_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/mohanarangan-t-r/rover_ws/src/rover_gz_sim -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/mohanarangan-t-r/rover_ws/install/rover_gz_sim
+[0.711s] Invoking command in '/home/mohanarangan-t-r/rover_ws/build/rover_gz_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/mohanarangan-t-r/rover_ws/build/rover_gz_sim -- -j16 -l16
+[0.756s] Invoked command in '/home/mohanarangan-t-r/rover_ws/build/rover_gz_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/mohanarangan-t-r/rover_ws/build/rover_gz_sim -- -j16 -l16
+[0.757s] Invoking command in '/home/mohanarangan-t-r/rover_ws/build/rover_gz_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/mohanarangan-t-r/rover_ws/build/rover_gz_sim
+[0.763s] -- Install configuration: ""
+[0.763s] -- Execute custom install script
+[0.764s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/launch/robot.launch.py
+[0.771s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/config/gz_bridge.yaml
+[0.779s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/ament_index/resource_index/package_run_dependencies/rover_gz_sim
+[0.787s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/ament_index/resource_index/parent_prefix_path/rover_gz_sim
+[0.798s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/environment/ament_prefix_path.sh
+[0.806s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/environment/ament_prefix_path.dsv
+[0.815s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/environment/path.sh
+[0.823s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/environment/path.dsv
+[0.830s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/local_setup.bash
+[0.840s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/local_setup.sh
+[0.851s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/local_setup.zsh
+[0.859s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/local_setup.dsv
+[0.868s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/package.dsv
+[0.875s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/ament_index/resource_index/packages/rover_gz_sim
+[0.882s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/cmake/rover_gz_simConfig.cmake
+[0.892s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/cmake/rover_gz_simConfig-version.cmake
+[0.901s] -- Symlinking: /home/mohanarangan-t-r/rover_ws/install/rover_gz_sim/share/rover_gz_sim/package.xml
+[0.924s] Invoked command in '/home/mohanarangan-t-r/rover_ws/build/rover_gz_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/mohanarangan-t-r/rover_ws/build/rover_gz_sim
