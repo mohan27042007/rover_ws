@@ -1,0 +1,6 @@
+
+train: ds/train/images
+val: ds/valid/images
+
+nc: 1
+names: ["boulder"]

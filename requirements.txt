@@ -1,0 +1,9 @@
+numpy==1.26.4
+opencv-python==4.12.0.88
+pillow==12.0.0
+torch==2.9.1
+torchvision==0.24.1
+onnxruntime==1.23.2
+ultralytics==8.3.229
+pytest==9.0.1
+setuptools==75.8.0
