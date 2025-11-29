@@ -9,12 +9,12 @@
   <xacro:property name="H" value="0.160"/>     <!-- height -->
   <xacro:property name="wheel_r" value="0.05"/>  <!-- radius -->
   <xacro:property name="wheel_w" value="0.08"/>  <!-- width -->
-  <xacro:property name="clearance" value="0.25"/>  <!-- 250 mm -->
+  <xacro:property name="clearance" value="0.215"/>  <!-- 215 mm -->
 
   <!-- Slight outside offset so wheels stick out correctly -->
-  <xacro:property name="wheel_y_offset" value="${W/2 + 0.02}"/>  
-  <xacro:property name="wheel_x_front" value="${L/2 - 0.06}"/>
-  <xacro:property name="wheel_x_back"  value="-${L/2 - 0.06}"/>
+  <xacro:property name="wheel_y_offset" value="${W/2 + wheel_w/2 + 0.02}"/>  
+  <xacro:property name="wheel_x_front" value="${L/2 + 0.03}"/>
+  <xacro:property name="wheel_x_back"  value="-${L/2 + 0.02}"/>
 
   <!-- ========================= -->
   <!-- Physical Material + Mass  -->
@@ -79,58 +79,64 @@
   <!-- ========================= -->
   <!-- WHEEL MACRO -->
   <!-- ========================= -->
-  <xacro:macro name="wheel" params="wheel_name x y">
-  <link name="${wheel_name}_link">
+  <xacro:macro name="wheel" params="wheel_name x y mesh_stl mesh_rpy joint_axis">
+    <link name="${wheel_name}_link">
+      <visual>
+        <!-- apply mesh_rpy only here (no extra implicit rotations) -->
+        <origin xyz="0 0 0" rpy="${mesh_rpy}"/>
+        <geometry>
+          <mesh filename="${mesh_stl}"/>
+        </geometry>
 
-    <visual>
-      <!-- rotate cylinder so its axis aligns with the joint axis (y) -->
-      <origin xyz="0 0 0" rpy="-1.57 0 0"/>
-      <geometry>
-        <cylinder radius="${wheel_r}" length="${wheel_w}"/>
-      </geometry>
-      <material name="black"><color rgba="0.1 0.1 0.1 1"/></material>
-    </visual>
+        <material name="black">
+          <color rgba="0.05 0.05 0.05 1.0"/>
+        </material>
+      </visual>
 
-    <collision>
-      <!-- same rotation for collision geometry -->
-      <origin xyz="0 0 0" rpy="-1.57 0 0"/>
-      <geometry>
-        <cylinder radius="${wheel_r}" length="${wheel_w}"/>
-      </geometry>
-    </collision>
+      <collision>
+        <!-- approximate collision as cylinder so collisions behave nicely -->
+        <!-- collision origin rotated to put cylinder axis aligned with joint axis if needed -->
+        <origin xyz="0 0 0" rpy="${mesh_rpy}"/>
+        <geometry>
+          <cylinder radius="${wheel_r}" length="${wheel_w}"/>
+        </geometry>
+      </collision>
 
-    <inertial>
-      <!-- inertial principal axes rotated to match geometry orientation -->
-      <origin xyz="0 0 0" rpy="-1.57 0 0"/>
-      <mass value="${m_wheel}"/>
-      <inertia ixx="${I_wheel_axial}" ixy="0" ixz="0"
-               iyy="${I_wheel_axial}" iyz="0"
-               izz="${I_wheel_zz}"/>
-    </inertial>
+      <inertial>
+        <origin xyz="0 0 0" rpy="${mesh_rpy}"/>
+        <mass value="${m_wheel}"/>
+        <!-- simple wheel inertia -->
+        <inertia ixx="0.00089" ixy="0" ixz="0" iyy="0.00089" iyz="0" izz="0.0013057"/>
+      </inertial>
+    </link>
 
-  </link>
-
-  <joint name="${wheel_name}_joint" type="continuous">
-    <origin xyz="${x} ${y} ${wheel_r}" rpy="0 0 0"/>
-    <parent link="base_link"/>
-    <child link="${wheel_name}_link"/>
-    <axis xyz="0 1 0"/>
-    <dynamics damping="0.1" friction="0.1"/>
-  </joint>
+    <joint name="${wheel_name}_joint" type="continuous">
+      <!-- joint placed at the wheel contact point: z set to wheel_r -->
+      <!-- joint origin uses x,y from macro + wheel_r -->
+      <origin xyz="${x} ${y} ${wheel_r}" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="${wheel_name}_link"/>
+      <!-- allow the user-supplied axis for the joint -->
+      <axis xyz="${joint_axis}"/>
+      <dynamics damping="0.1" friction="0.1"/>
+    </joint>
   </xacro:macro>
 
   <!-- LiDAR link (visual/collision/inertial only) -->
   <link name="lidar_link">
     <visual>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0 0 0" rpy="3.14159 0 0"/>
       <geometry>
-        <cylinder radius="0.065" length="0.05"/>
+          <mesh filename="package://rover_description/meshes/Lidar.STL" scale="1 1 1"/>
       </geometry>
-      <material name="black"><color rgba="0.1 0.1 0.1 1"/></material>
+
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
     </visual>
 
     <collision>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0 0 0" rpy="3.14159 0 0"/>
       <geometry>
         <cylinder radius="0.065" length="0.05"/>
       </geometry>
@@ -138,7 +144,7 @@
 
     <inertial>
       <mass value="0.3"/>
-      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <origin xyz="0 0 0" rpy="3.14159 0 0"/>
       <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
@@ -148,7 +154,7 @@
     <parent link="base_link"/>
     <child link="lidar_link"/>
     <!-- Mount at front-center of rover, facing forward horizontally -->
-    <origin xyz="0.20 0 0.32" rpy="0 0 0"/>
+    <origin xyz="0.13 0.01 0.24" rpy="0 0 0"/>
   </joint>
 
 
@@ -202,25 +208,34 @@
   <!-- ========================= -->
 
   <!-- Front Left -->
-  <xacro:wheel wheel_name="front_left"
-               x="${wheel_x_front}"
-               y="${wheel_y_offset}"/>
-
+    <xacro:wheel wheel_name="front_left"
+                    x="${wheel_x_front}"
+                    y="${wheel_y_offset}"
+                    mesh_stl="package://rover_description/meshes/wheel4.STL"
+                    mesh_rpy="-1.57 0 0"
+                    joint_axis="0 0 1"/>
   <!-- Front Right -->
-  <xacro:wheel wheel_name="front_right"
-               x="${wheel_x_front}"
-               y="-${wheel_y_offset}"/>
-
-  <!-- Rear Left -->
-  <xacro:wheel wheel_name="rear_left"
-               x="${wheel_x_back}"
-               y="${wheel_y_offset}"/>
-
-  <!-- Rear Right -->
-  <xacro:wheel wheel_name="rear_right"
-               x="${wheel_x_back}"
-               y="-${wheel_y_offset}"/>
-
+    <xacro:wheel wheel_name="front_right"
+                    x="${wheel_x_front}"
+                    y="-${wheel_y_offset}"
+                    mesh_stl="package://rover_description/meshes/wheel2.STL"
+                    mesh_rpy="-1.57 0 0"
+                    joint_axis="0 0 1"/>
+    <!-- Rear Left -->
+    <xacro:wheel wheel_name="rear_left"
+                    x="${wheel_x_back}"
+                    y="${wheel_y_offset}"
+                    mesh_stl="package://rover_description/meshes/wheel3.STL"
+                    mesh_rpy="-1.57 0 0"
+                    joint_axis="0 0 1"/>
+    <!-- Rear Right -->
+    <xacro:wheel wheel_name="rear_right"
+                    x="${wheel_x_back}"
+                    y="-${wheel_y_offset}"
+                    mesh_stl="package://rover_description/meshes/wheel1.STL"
+                    mesh_rpy="-1.57 0 0"
+                    joint_axis="0 0 1"/>
+  
   <!-- ========================= -->
   <!-- GAZEBO PLUGINS (Inline for Harmonic) -->
   <!-- ========================= -->
