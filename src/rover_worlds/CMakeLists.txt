@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(rover_bringup)
+project(rover_worlds)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -11,14 +11,16 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+# Install the worlds folder
 install(
-  DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}
+  DIRECTORY worlds/
+  DESTINATION share/${PROJECT_NAME}/worlds
 )
 
+# Install the model folder (DAE + textures)
 install(
-  PROGRAMS scripts/custom_teleop.py
-  DESTINATION lib/${PROJECT_NAME}
+  DIRECTORY models/
+  DESTINATION share/${PROJECT_NAME}/models
 )
 
 if(BUILD_TESTING)

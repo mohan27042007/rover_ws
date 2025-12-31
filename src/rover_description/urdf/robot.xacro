@@ -213,28 +213,28 @@
                     y="${wheel_y_offset}"
                     mesh_stl="package://rover_description/meshes/wheel4.STL"
                     mesh_rpy="-1.57 0 0"
-                    joint_axis="0 0 1"/>
+                    joint_axis="0 1 0"/>
   <!-- Front Right -->
     <xacro:wheel wheel_name="front_right"
                     x="${wheel_x_front}"
                     y="-${wheel_y_offset}"
                     mesh_stl="package://rover_description/meshes/wheel2.STL"
                     mesh_rpy="-1.57 0 0"
-                    joint_axis="0 0 1"/>
+                    joint_axis="0 1 0"/>
     <!-- Rear Left -->
     <xacro:wheel wheel_name="rear_left"
                     x="${wheel_x_back}"
                     y="${wheel_y_offset}"
                     mesh_stl="package://rover_description/meshes/wheel3.STL"
                     mesh_rpy="-1.57 0 0"
-                    joint_axis="0 0 1"/>
+                    joint_axis="0 1 0"/>
     <!-- Rear Right -->
     <xacro:wheel wheel_name="rear_right"
                     x="${wheel_x_back}"
                     y="-${wheel_y_offset}"
                     mesh_stl="package://rover_description/meshes/wheel1.STL"
                     mesh_rpy="-1.57 0 0"
-                    joint_axis="0 0 1"/>
+                    joint_axis="0 1 0"/>
   
   <!-- ========================= -->
   <!-- GAZEBO PLUGINS (Inline for Harmonic) -->

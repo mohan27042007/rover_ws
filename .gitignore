@@ -4,3 +4,4 @@ install/
 log/
 .ros/
 .vscode/ # Optional: ignore editor-specific settings
+src/rover_worlds/models/my_dae_model/meshes/moonarena.dae

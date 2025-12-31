@@ -4,8 +4,8 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     teleop = Node(
-        package='teleop_twist_keyboard',
-        executable='teleop_twist_keyboard',
+        package='rover_bringup',
+        executable='custom_teleop.py',
         name='teleop_key',
         output='screen',
         prefix='xterm -e',
